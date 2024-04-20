@@ -1,13 +1,9 @@
 import json
-
-# Create a dictionary with default values
-config_data = {
+{
     "search_phrase": "",
     "news_category": "",
     "number_of_months": 0
 }
-
-# Write the dictionary to a JSON file
 with open('config.json', 'w') as json_file:
     json.dump(config_data, json_file, indent=4)
 
