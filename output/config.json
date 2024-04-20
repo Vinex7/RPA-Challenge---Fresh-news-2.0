@@ -1,1 +1,34 @@
+import requests
+import json
+from bs4 import BeautifulSoup
 
+def scrape_news(search_phrase="", news_category="", number_of_months=0):
+    # Read the config.json file and use its contents as defaults for input parameters
+    with open('config.json', 'r') as config_file:
+        config = json.load(config_file)
+        if not search_phrase:
+            search_phrase = config.get("search_phrase", "")
+        if not news_category:
+            news_category = config.get("news_category", "")
+        if not number_of_months:
+            number_of_months = config.get("number_of_months", 0)
+
+    # Define the URL of the website to scrape
+    news_url = f"https://www.aljazeera.com/{news_category}"
+
+    # Send an HTTP GET request to the website
+    response = requests.get(news_url)
+
+    # Create a BeautifulSoup object to parse the HTML content
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    # Find specific elements in the HTML content using BeautifulSoup
+    # For example, if you want to find all the headlines on the page:
+    headlines = soup.find_all('h2', class_='top-sec-title')
+
+    # Print out the headlines
+    for headline in headlines:
+        print(headline.text.strip())
+
+# Call the function with optional parameters
+scrape_news()
